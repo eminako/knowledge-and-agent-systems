@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knowledge>
+  <title>Tortious acts (Dutch Civil Code 6:162–6:165)</title>
+  <description>Decide liability for damages based on unlawful/tortious acts.</description>
+
+  <goal name="liable">
+    <description>Is the person liable for damages?</description>
+    <answer value="yes">Yes: must repair the damage.</answer>
+    <answer value="no">No: no obligation to repair.</answer>
+    <answer>Insufficient Information.</answer>
+  </goal>
+
+  <!-- Questions -->
+  <question>
+    <description>How old is the person?</description>
+    <option><description>Under 14 years</description><then><fact name="age">under14</fact></then></option>
+    <option><description>14 years or older</description><then><fact name="age">14_or_older</fact></then></option>
+  </question>
+
+  <question>
+    <description>Was the act done under a mental or physical disability?</description>
+    <option><description>Yes</description><then><fact name="disability">yes</fact></then></option>
+    <option><description>No</description><then><fact name="disability">no</fact></then></option>
+  </question>
+
+  <question>
+    <description>Was there a violation of someone’s right OR an act/omission against a legal duty or proper social conduct?</description>
+    <option><description>Yes — there was such a violation/omission.</description><then><fact name="unlawful">yes</fact></then></option>
+    <option><description>No — none of these.</description><then><fact name="unlawful">no</fact></then></option>
+  </question>
+
+  <question>
+    <description>Was there a justification (e.g., emergency rescue/necessity)?</description>
+    <option><description>Yes — there was justification.</description><then><fact name="justified">yes</fact></then></option>
+    <option><description>No — there was no justification.</description><then><fact name="justified">no</fact></then></option>
+  </question>
+
+  <question>
+    <description>Can the act be attributed to the person (fault or cause for which they are accountable)?</description>
+    <option><description>Yes — attributable by fault or law/common opinion.</description><then><fact name="attributable">yes</fact></then></option>
+    <option><description>No — not attributable by fault or law/common opinion.</description><then><fact name="attributable">no</fact></then></option>
+  </question>
+
+  <question>
+    <description>Did the violated standard intend to protect against this type of damage?</description>
+    <option><description>Yes — it was intended to protect against this damage.</description><then><fact name="protected_standard">yes</fact></then></option>
+    <option><description>No — it was not intended to protect against this damage.</description><then><fact name="protected_standard">no</fact></then></option>
+  </question>
+
+  <!-- Rules -->
+  <rule>
+    <description>Under 14 ⇒ not attributable (Art. 6:164)</description>
+    <if><fact name="age">under14</fact></if>
+    <then><fact name="attributable">no</fact></then>
+  </rule>
+
+  <rule>
+    <description>14+ and disability ⇒ attributable (Art. 6:165)</description>
+    <if><and>
+      <fact name="age">14_or_older</fact>
+      <fact name="disability">yes</fact>
+    </and></if>
+    <then><fact name="attributable">yes</fact></then>
+  </rule>
+
+  <rule>
+    <description>Unlawful + no justification ⇒ tortious_act = yes (Art. 6:162(2))</description>
+    <if><and>
+      <fact name="unlawful">yes</fact>
+      <fact name="justified">no</fact>
+    </and></if>
+    <then><fact name="tortious_act">yes</fact></then>
+  </rule>
+
+  <rule>
+    <description>Justification present ⇒ no tortious act</description>
+    <if><fact name="justified">yes</fact></if>
+    <then><fact name="tortious_act">no</fact></then>
+  </rule>
+
+  <rule>
+    <description>No unlawfulness ⇒ no tortious act</description>
+    <if><fact name="unlawful">no</fact></if>
+    <then><fact name="tortious_act">no</fact></then>
+  </rule>
+
+  <rule>
+    <description>tortious_act + attributable + protected_standard ⇒ liable = yes</description>
+    <if><and>
+      <fact name="tortious_act">yes</fact>
+      <fact name="attributable">yes</fact>
+      <fact name="protected_standard">yes</fact>
+    </and></if>
+    <then><fact name="liable">yes</fact></then>
+  </rule>
+
+  <rule>
+    <description>No tortious act ⇒ not liable</description>
+    <if><fact name="tortious_act">no</fact></if>
+    <then><fact name="liable">no</fact></then>
+  </rule>
+
+  <rule>
+    <description>Not attributable ⇒ not liable</description>
+    <if><fact name="attributable">no</fact></if>
+    <then><fact name="liable">no</fact></then>
+  </rule>
+
+  <rule>
+    <description>Standard not protecting this damage ⇒ not liable (Art. 6:163)</description>
+    <if><fact name="protected_standard">no</fact></if>
+    <then><fact name="liable">no</fact></then>
+  </rule>
+</knowledge>
