@@ -98,9 +98,7 @@ is the person liable for damages?
 no: no obligation to repair
 --> the liability is blocked by 6:163 because the violated rule doesn´t aim to protect againt leo´s type of loss
   
-  
-   
-7. Description of the design of the knowledge system
+ 
 
    3.1 Goal and scope
 The system gives out advice if a person should repair damages based on a tortious/unlawful act under the dutch civil code articles \textbf${6:162-6:165$}, limited by \textbf${6:163}$.
